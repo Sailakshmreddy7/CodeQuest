@@ -3,7 +3,7 @@ const Student = require("../models/Student");
 
 exports.getAllStudents = async (req, res) => {
   try {
-    const students = await Student.find().populate('course'); // Populate the 'course' field
+    const students = await Student.find().populate("course"); // Populate the 'course' field
     res.json(students);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -12,7 +12,7 @@ exports.getAllStudents = async (req, res) => {
 
 exports.getStudentById = async (req, res) => {
   try {
-    const student = await Student.findById(req.params.id).populate('course'); // Populate the 'course' field
+    const student = await Student.findById(req.params.id).populate("course"); // Populate the 'course' field
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
@@ -37,16 +37,22 @@ exports.createStudent = async (req, res) => {
 
 exports.updateStudent = async (req, res) => {
   try {
+    const { selectedTheoryCourses, selectedLabCourses } = req.body; // Destructure theory and lab courses from the request body
+
+    // Find and update the student
     const updatedStudent = await Student.findByIdAndUpdate(
       req.params.id,
-      req.body,
-      { new: true }
+      { ...req.body, selectedTheoryCourses, selectedLabCourses }, // Spread existing fields and add/update theory and lab courses
+      { new: true } // Return the updated document
     );
+
     if (!updatedStudent) {
       return res.status(404).json({ message: "Student not found" });
     }
+
     res.json({
-      message: "Student details Updated!"
+      message: "Student details updated!",
+      updatedStudent, // Optionally return the updated student data
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -75,14 +81,14 @@ exports.updateAttendance = async (req, res) => {
   try {
     const updates = req.body;
     if (!Array.isArray(updates)) {
-      throw new Error('Updates must be an array');
+      throw new Error("Updates must be an array");
     }
 
-    const bulkOperations = updates.map(update => ({
+    const bulkOperations = updates.map((update) => ({
       updateOne: {
         filter: { _id: update.studentId },
-        update: { $inc: { attendance: update.attendanceCount } }
-      }
+        update: { $inc: { attendance: update.attendanceCount } },
+      },
     }));
 
     await Student.bulkWrite(bulkOperations);
@@ -103,9 +109,9 @@ exports.totalAttendance = async (req, res) => {
       return res.status(404).json({ message: "Attendance not found" });
     }
     res.json({
-      updatedAttendance: updatedAttendance
+      updatedAttendance: updatedAttendance,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}
+};

@@ -27,29 +27,35 @@ const Sidebar = () => {
         const adminData = await response.json();
         setUserName(adminData.name);
       } else {
-        console.error('Failed to fetch admin data');
+        console.error("Failed to fetch admin data");
       }
     } catch (error) {
-      console.error('Error fetching admin data:', error.message);
+      console.error("Error fetching admin data:", error.message);
     }
   };
-
 
   const handleDropdownToggle = () => {
     setShowDropdown(!showDropdown);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('isAdmin');
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("isAdmin");
     window.location.href = "/";
   };
 
   return (
-    <div className="sidebar d-flex flex-column justify-content-between border-end p-3 vh-100" style={{ width: "18rem" }}>
+    <div
+      className="sidebar d-flex flex-column justify-content-between border-end p-3 vh-100"
+      style={{ width: "18rem" }}
+    >
       <div>
         <p
-          style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
           className="user-select-none d-flex align-items-center text-black text-decoration-none"
         >
           <i className="bi bi-person-circle fs-4 me-2"></i>
@@ -65,23 +71,42 @@ const Sidebar = () => {
           </li>
 
           <li className="nav-item p-1">
-            <Link to="/admin/dashboard/manage-faculty" className="nav-link text-black">
+            <Link
+              to="/admin/dashboard/manage-faculty"
+              className="nav-link text-black"
+            >
               <i className="bi bi-person-fill-gear me-2 fs-5"></i>
               <span className="fs-5">Manage Faculties</span>
             </Link>
           </li>
 
           <li className="nav-item p-1">
-            <Link to="/admin/dashboard/manage-students" className="nav-link text-black">
+            <Link
+              to="/admin/dashboard/manage-students"
+              className="nav-link text-black"
+            >
               <i className="bi bi-people me-2 fs-5"></i>
               <span className="fs-5">Manage Students</span>
             </Link>
           </li>
 
           <li className="nav-item p-1">
-            <Link to="/admin/dashboard/manage-courses" className="nav-link text-black">
+            <Link
+              to="/admin/dashboard/manage-courses"
+              className="nav-link text-black"
+            >
               <i className="bi bi-book me-2 fs-5"></i>
               <span className="fs-5">Manage Course</span>
+            </Link>
+          </li>
+
+          <li className="nav-item p-1">
+            <Link
+              to="/admin/dashboard/all-feedbacks"
+              className="nav-link text-black"
+            >
+              <i className="bi bi-book me-2 fs-5"></i>
+              <span className="fs-5">All Feedbacks</span>
             </Link>
           </li>
 
@@ -101,12 +126,16 @@ const Sidebar = () => {
           onToggle={handleDropdownToggle}
           align="end"
         >
-          <Dropdown.Toggle className="your-profile d-flex align-items-center border-0 text-black" variant="light" id="dropdown-basic">
+          <Dropdown.Toggle
+            className="your-profile d-flex align-items-center border-0 text-black"
+            variant="light"
+            id="dropdown-basic"
+          >
             <span
               className="fs-5"
               style={{
                 paddingLeft: "20px",
-                paddingRight: "60px"
+                paddingRight: "60px",
               }}
             >
               <i className="bi bi-person-circle me-2 fs-5" />
@@ -115,11 +144,11 @@ const Sidebar = () => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item onClick={handleLogout} >
+            <Dropdown.Item onClick={handleLogout}>
               <span
                 style={{
                   paddingLeft: "80px",
-                  paddingRight: "85px"
+                  paddingRight: "85px",
                 }}
               >
                 Logout
